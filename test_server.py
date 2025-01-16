@@ -1,6 +1,7 @@
 import pytest
-from server import app
 from unittest.mock import patch
+from server import app, loadClubs, loadCompetitions
+
 
 @pytest.fixture
 def client():
@@ -15,10 +16,9 @@ def test_showSummary_valid_email(client):
 
 def test_showSummary_invalid_email(client):
     response = client.post('/showSummary', data={'email': 'invalid@example.com'}, follow_redirects=True)
-    assert response.status_code == 200  # Should be 200 after following the redirect
+    assert response.status_code == 200  
     assert b'Email not found' in response.data
 
-# Mock data
 mock_clubs = [
     {"name": "Simply Lift", "email": "john@simplylift.co", "points": "13"}
 ]
@@ -28,16 +28,18 @@ mock_competitions = [
     {"name": "Powerlifting", "date": "2023-05-20 10:00:00", "numberOfPlaces": "30"}
 ]
 
-@patch('server.loadClubs', return_value=mock_clubs)
-@patch('server.loadCompetitions', return_value=mock_competitions)
-def test_book_valid(client, mock_loadClubs, mock_loadCompetitions):
-    response = client.get('/book/Powerlifting/SimplyLift')
+@pytest.fixture(autouse=True)
+def mock_data():
+    with patch('server.clubs', mock_clubs), \
+         patch('server.competitions', mock_competitions):
+        yield
+
+def test_book_valid(client):
+    response = client.get('/book/Powerlifting/Simply Lift')
     assert response.status_code == 200
     assert b'Booking' in response.data
 
-@patch('server.loadClubs', return_value=mock_clubs)
-@patch('server.loadCompetitions', return_value=mock_competitions)
-def test_book_invalid(client, mock_loadClubs, mock_loadCompetitions):
-    response = client.get('/book/Powerlifting/InvalidClub')
+def test_book_invalid_competition(client):
+    response = client.get('/book/Invalid Competition/Simply Lift', follow_redirects=True)
     assert response.status_code == 200
     assert b'Something went wrong-please try again' in response.data

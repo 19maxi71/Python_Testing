@@ -42,4 +42,14 @@ def test_book_valid(client):
 def test_book_invalid_competition(client):
     response = client.get('/book/Invalid Competition/Simply Lift', follow_redirects=True)
     assert response.status_code == 200
-    assert b'Something went wrong-please try again' in response.data
+    assert b'Competition not found.' in response.data
+
+def test_book_invalid_club(client):
+    response = client.get('/book/Powerlifting/Invalid Club', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Club not found.' in response.data
+
+def test_book_missing_parameters(client):
+    response = client.get('/book//', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Please provide both club and competition names.' in response.data

@@ -34,14 +34,18 @@ def showSummary():
     return render_template('welcome.html',club=club,competitions=competitions)
 
 
+@app.route('/book/', defaults={'competition': None, 'club': None})
+@app.route('/book/<competition>/', defaults={'club': None})
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
+    if not competition or not club:
+        flash('Please provide both club and competition names.')
+        return redirect(url_for('index'))
+
     foundClub = next((c for c in clubs if c['name'] == club), None)
     foundCompetition = next((c for c in competitions if c['name'] == competition), None)
     
-    if not club or not competition:
-        flash('Please provide both club and competition names.')
-    elif not foundClub:
+    if not foundClub:
         flash('Club not found.')
     elif not foundCompetition:
         flash('Competition not found.')

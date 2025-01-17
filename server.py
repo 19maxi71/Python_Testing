@@ -81,6 +81,7 @@ def purchasePlaces():
         flash('Not enough points available')
     elif placesRequired > 12:
         flash('You can only book up to 12 places per competition')
+        print("Flash message set: You can only book up to 12 places per competition")  # Debug print
     else:
         competition['numberOfPlaces'] = availablePlaces - placesRequired
         club['points'] = clubPoints - placesRequired

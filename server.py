@@ -13,6 +13,12 @@ def loadCompetitions():
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
 
+"""
+Déclare the INDEX_ROUTE constante et assigne la valeur 'index' à cette constante 
+pour définir la route de la page d'accueil.
+"""
+INDEX_ROUTE = 'index' 
+
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
@@ -30,7 +36,7 @@ def showSummary():
         club = [club for club in clubs if club['email'] == request.form['email']][0]
     except IndexError:
         flash('Email not found')
-        return redirect(url_for('index'))
+        return redirect(url_for(INDEX_ROUTE))
     return render_template('welcome.html',club=club,competitions=competitions)
 
 
@@ -40,7 +46,7 @@ def showSummary():
 def book(competition, club):
     if not competition or not club:
         flash('Please provide both club and competition names.')
-        return redirect(url_for('index'))
+        return redirect(url_for(INDEX_ROUTE))
 
     foundClub = next((c for c in clubs if c['name'] == club), None)
     foundCompetition = next((c for c in competitions if c['name'] == competition), None)
@@ -52,7 +58,7 @@ def book(competition, club):
     elif foundClub and foundCompetition:
         return render_template('booking.html', club=foundClub, competition=foundCompetition)
     
-    return redirect(url_for('index'))
+    return redirect(url_for(INDEX_ROUTE))
 
 
 @app.route('/purchasePlaces',methods=['POST'])
@@ -70,4 +76,4 @@ def purchasePlaces():
 
 @app.route('/logout')
 def logout():
-    return redirect(url_for('index'))
+    return redirect(url_for(INDEX_ROUTE))

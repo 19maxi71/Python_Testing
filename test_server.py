@@ -123,3 +123,11 @@ def test_logout(client):
     response = client.get('/logout')
     assert response.status_code == 302
     assert response.headers['Location'] == 'http://localhost/'
+
+"""
+Test de clubsPoints
+"""
+def test_summary(client):
+    response = client.get('/clubsPoints')
+    assert response.status_code == 200
+    assert b'Clubs Points' in response.data

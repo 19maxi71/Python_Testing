@@ -17,7 +17,8 @@ def loadCompetitions():
 Déclare the INDEX_ROUTE constante et assigne la valeur 'index' à cette constante 
 pour définir la route de la page d'accueil.
 """
-INDEX_ROUTE = 'index' 
+INDEX_ROUTE = 'index'
+CLUBS_POINTS_ROUTE = 'clubsPoints'
 
 
 app = Flask(__name__)
@@ -92,6 +93,11 @@ def purchasePlaces():
 
 
 # TODO: Add route for points display
+@app.route('/clubsPoints')
+def clubsPoints():
+    return render_template('clubsPoints.html', clubs=clubs)
+
+
 
 
 @app.route('/logout')

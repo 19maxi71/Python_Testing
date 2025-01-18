@@ -114,6 +114,11 @@ def test_purchasePlaces_missing_parameters(mock_loadClubs, mock_loadCompetitions
     assert response.status_code == 200
     assert b"Something went wrong-please try again" in response.data
 
+
+
+"""
+Test de Logout
+"""
 def test_logout(client):
     response = client.get('/logout')
     assert response.status_code == 302

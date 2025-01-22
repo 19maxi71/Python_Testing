@@ -30,7 +30,7 @@
     <h2>Clubs Points</h2>
     <table>
         <tr>
-            <th>Rank</th>
+            <th>n°</th>
             <th>Club Name</th>
             <th>Points</th>
         </tr>
@@ -42,5 +42,19 @@
         </tr>
         {% endfor %}
     </table>
+    <h2> Tournament Info</h2>
+    <table>
+        <tr>
+            <th>Competition Name</th>
+            <th>Date</th>
+            <th>Number of Places</th>
+        </tr>
+        {% for comp in competitions %}
+        <tr>
+            <td>{{ comp['name'] }}</td>
+            <td>{{ comp['date'] }}</td>
+            <td>{{ comp['numberOfPlaces'] }}</td>
+        </tr>
+        {% endfor %}
 </body>
 </html>

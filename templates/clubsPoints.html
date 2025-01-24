@@ -1,60 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clubs Points | GUDLFT Registration</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(odd) {
-            background-color: #ffffff;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-    <h2>Clubs Points</h2>
-    <table>
-        <tr>
-            <th>n°</th>
-            <th>Club Name</th>
-            <th>Points</th>
-        </tr>
-        {% for club in clubs %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ club['name'] }}</td>
-            <td>{{ club['points'] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <h2> Tournament Info</h2>
-    <table>
-        <tr>
-            <th>Competition Name</th>
-            <th>Date</th>
-            <th>Number of Places</th>
-        </tr>
-        {% for comp in competitions %}
-        <tr>
-            <td>{{ comp['name'] }}</td>
-            <td>{{ comp['date'] }}</td>
-            <td>{{ comp['numberOfPlaces'] }}</td>
-        </tr>
-        {% endfor %}
-</body>
-</html>
+{% extends "base_template.html" %}
+
+{% block title %}Clubs Points | GUDLFT Registration{% endblock %}
+
+{% block content %}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+
+<h1>Clubs Points</h1>
+<table>
+    <tr>
+        <th>Club Name</th>
+        <th>Points</th>
+    </tr>
+    {% for club in clubs %}
+    <tr>
+        <td>{{ club['name'] }}</td>
+        <td>{{ club['points'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Tournament Info</h2>
+<table>
+    <tr>
+        <th>Competition Name</th>
+        <th>Date</th>
+        <th>Number of Places</th>
+    </tr>
+    {% for comp in competitions %}
+    <tr>
+        <td>{{ comp['name'] }}</td>
+        <td>{{ comp['date'] }}</td>
+        <td>{{ comp['numberOfPlaces'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="mt-3">
+    <button onclick="history.back()"class="btn btn-secondary">Go Back</button>
+</div>
+
+{% endblock %}

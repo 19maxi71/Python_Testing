@@ -3,31 +3,41 @@
 {% block title %}Summary | GUDLFT Registration{% endblock %}
 
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Welcome, {{ club['email'] }}</h2>
-        <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
-    </div>
-    
-    <div class="mb-3 p-3 border rounded">
-        <strong>Points available:</strong> {{ club['points'] }}
-    </div>
-    
-    <h3>Competitions:</h3>
-    <ul class="list-unstyled">
-        {% for comp in competitions %}
-        <li class="mb-3">
-            <strong>{{ comp['name'] }}</strong><br />
-            Date: {{ comp['date'] }}<br />
-            Number of Places: {{ comp['numberOfPlaces'] }}
-            {% if comp['numberOfPlaces']|int > 0 %}
-            <br />
-            <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" class="btn btn-primary mt-2">Book Places</a>
-            {% endif %}
-        </li>
-        <hr />
-        {% endfor %}
-    </ul>
-    <div class= "position-relative mt-5"> 
-        <a href="{{ url_for('clubsPoints') }}" class="btn btn-success" role="button"> View All Clubs Points</a>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Welcome, {{ club['email'] }}</h2>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+           {% for message in messages %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        
+        <div class="mb-3 p-3 border rounded">
+            <strong>Points available:</strong> {{ club['points'] }}
+        </div>
+        
+        <h3>Competitions:</h3>
+        <ul class="list-unstyled">
+            {% for comp in competitions %}
+            <li class="mb-3">
+                <strong>{{ comp['name'] }}</strong><br />
+                Date: {{ comp['date'] }}<br />
+                Number of Places: {{ comp['numberOfPlaces'] }}
+                {% if comp['numberOfPlaces']|int > 0 %}
+                <br />
+                <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" class="btn btn-primary mt-2">Book Places</a>
+                {% endif %}
+            </li>
+            <hr />
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}

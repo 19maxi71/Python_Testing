@@ -37,7 +37,7 @@ def showSummary():
     try:
         club = [club for club in clubs if club['email'] == request.form['email']][0]
     except IndexError:
-        flash('Email not found')
+        flash('Email not found', 'error')
         return redirect(url_for(INDEX_ROUTE))
     return render_template('welcome.html',club=club,competitions=competitions)
 
@@ -47,16 +47,16 @@ def showSummary():
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
     if not competition or not club:
-        flash('Please provide both club and competition names.')
+        flash('Please provide both club and competition names.', 'error')
         return redirect(url_for(INDEX_ROUTE))
 
     foundClub = next((c for c in clubs if c['name'] == club), None)
     foundCompetition = next((c for c in competitions if c['name'] == competition), None)
     
     if not foundClub:
-        flash('Club not found.')
+        flash('Club not found.', 'error')
     elif not foundCompetition:
-        flash('Competition not found.')
+        flash('Competition not found.', 'error')
     elif foundClub and foundCompetition:
         return render_template('booking.html', club=foundClub, competition=foundCompetition)
     
@@ -70,7 +70,7 @@ def purchasePlaces():
     placesRequired = request.form.get('places')
     
     if not competition or not club or not placesRequired:
-        flash("Something went wrong-please try again")
+        flash("Something went wrong-please try again", 'error')
         return redirect(url_for(INDEX_ROUTE))
     
     placesRequired = int(placesRequired)
@@ -78,16 +78,15 @@ def purchasePlaces():
     availablePlaces = int(competition['numberOfPlaces'])
     
     if placesRequired > availablePlaces:
-        flash('Not enough places available')
+        flash('Not enough places available', 'error')
     elif placesRequired > clubPoints:
-        flash('Not enough points available')
+        flash('Not enough points available', 'error')
     elif placesRequired > 12:
-        flash('You can only book up to 12 places per competition')
-        print("Flash message set: You can only book up to 12 places per competition")
+        flash('You can only book up to 12 places per competition', 'error')
     else:
         competition['numberOfPlaces'] = availablePlaces - placesRequired
         club['points'] = clubPoints - placesRequired
-        flash('Great-booking complete!')
+        flash('Great-booking complete!', 'success')
     
     return render_template('welcome.html', club=club, competitions=competitions)
 
